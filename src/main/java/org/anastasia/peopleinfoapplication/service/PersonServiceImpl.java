@@ -7,8 +7,6 @@ import org.anastasia.peopleinfoapplication.model.Person;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class PersonServiceImpl implements PersonService {
     private PersonDao personDao;

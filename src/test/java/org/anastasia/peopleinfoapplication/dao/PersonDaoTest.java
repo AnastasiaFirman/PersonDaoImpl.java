@@ -5,11 +5,13 @@ import org.anastasia.peopleinfoapplication.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDate;
 
 public class PersonDaoTest {
-    private final PersonDao personDao = new PersonDaoImpl(new PostgresConnector());
+    private final PersonDao personDao = new ClassPathXmlApplicationContext("file:src/main/resources/applicationContext.xml")
+            .getBean("personDaoImpl", PersonDaoImpl.class);
 
     @AfterEach
     void deleteAll() {
