@@ -11,4 +11,7 @@
     <bean id="personDaoImpl" class="org.anastasia.peopleinfoapplication.dao.PersonDaoImpl">
         <constructor-arg ref="postgresConnector"/>
     </bean>
+    <bean id="personServiceImpl" class="org.anastasia.peopleinfoapplication.service.PersonServiceImpl">
+        <constructor-arg ref="personDao"/>
+    </bean>
 </beans>

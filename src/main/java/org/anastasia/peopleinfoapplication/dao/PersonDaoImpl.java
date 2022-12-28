@@ -1,6 +1,7 @@
 package org.anastasia.peopleinfoapplication.dao;
 
 import org.anastasia.peopleinfoapplication.dbconnector.Connector;
+import org.anastasia.peopleinfoapplication.exception.SQLProcessingException;
 import org.anastasia.peopleinfoapplication.model.Person;
 
 import java.sql.*;
@@ -40,7 +41,7 @@ public class PersonDaoImpl implements PersonDao {
                 person.setId(generatedKeys.getLong("id"));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
         return person;
     }
@@ -60,7 +61,7 @@ public class PersonDaoImpl implements PersonDao {
                 return Optional.empty();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
         return Optional.of(person);
     }
@@ -76,7 +77,7 @@ public class PersonDaoImpl implements PersonDao {
                 result.add(buildPerson(resultSet));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
         return result;
     }
@@ -88,7 +89,7 @@ public class PersonDaoImpl implements PersonDao {
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
     }
 
@@ -100,7 +101,7 @@ public class PersonDaoImpl implements PersonDao {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
     }
 
@@ -118,7 +119,7 @@ public class PersonDaoImpl implements PersonDao {
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
         return person;
     }
@@ -132,7 +133,7 @@ public class PersonDaoImpl implements PersonDao {
             person.setAge(resultSet.getInt("age"));
             person.setDateOfBirth((resultSet.getDate("date_of_birth")).toLocalDate());
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLProcessingException(e.getMessage());
         }
         return person;
     }
