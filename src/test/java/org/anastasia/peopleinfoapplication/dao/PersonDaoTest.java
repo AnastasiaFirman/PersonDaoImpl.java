@@ -1,6 +1,5 @@
 package org.anastasia.peopleinfoapplication.dao;
 
-import org.anastasia.peopleinfoapplication.dbconnector.PostgresConnector;
 import org.anastasia.peopleinfoapplication.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
