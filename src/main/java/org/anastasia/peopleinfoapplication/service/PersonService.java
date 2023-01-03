@@ -2,18 +2,19 @@ package org.anastasia.peopleinfoapplication.service;
 
 import org.anastasia.peopleinfoapplication.model.Person;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface PersonService {
-    Person save(Person person) throws SQLException;
 
-    Person findById(Long id) throws SQLException;
+    Person save(Person person);
 
-    List<Person> findAll() throws SQLException;
-    void deleteAll() throws SQLException;
+    Person findById(Long id);
 
-    void deleteById(Long id) throws SQLException;
+    List<Person> findAll();
 
-    Person update(Long id, Person person) throws SQLException;
+    void deleteAll();
+
+    void deleteById(Long id);
+
+    Person update(Long id, Person person);
 }

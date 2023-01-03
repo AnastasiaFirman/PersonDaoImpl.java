@@ -13,9 +13,10 @@ import java.util.Properties;
 public class PostgresConnector implements Connector {
     @Override
     public Connection getConnection() {
-        String url = getProperties().getProperty("url");
-        String user = getProperties().getProperty("user");
-        String password = getProperties().getProperty("password");
+        Properties props = getProperties();
+        String url = props.getProperty("url");
+        String user = props.getProperty("user");
+        String password = props.getProperty("password");
 
         try {
             return DriverManager.getConnection(url, user, password);
@@ -31,7 +32,6 @@ public class PostgresConnector implements Connector {
             return prop;
         } catch (IOException e) {
             throw new ReadPropertyException(e.getMessage());
-
         }
     }
 }
