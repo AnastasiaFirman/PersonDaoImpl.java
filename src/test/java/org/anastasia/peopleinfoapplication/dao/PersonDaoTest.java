@@ -4,13 +4,19 @@ import org.anastasia.peopleinfoapplication.model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 
+@SpringBootTest
 public class PersonDaoTest {
-    private final PersonDao personDao = new ClassPathXmlApplicationContext("file:src/main/resources/applicationContext.xml")
-            .getBean("personDaoImpl", PersonDaoImpl.class);
+    private final PersonDao personDao;
+
+    @Autowired
+    public PersonDaoTest(PersonDao personDao) {
+        this.personDao = personDao;
+    }
 
     @AfterEach
     void deleteAll() {

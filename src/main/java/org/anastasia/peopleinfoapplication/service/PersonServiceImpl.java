@@ -3,15 +3,19 @@ package org.anastasia.peopleinfoapplication.service;
 import org.anastasia.peopleinfoapplication.dao.PersonDao;
 import org.anastasia.peopleinfoapplication.exception.UserNotFoundException;
 import org.anastasia.peopleinfoapplication.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+@Service
 public class PersonServiceImpl implements PersonService {
 
-    private PersonDao personDao;
+    private final PersonDao personDao;
 
+    @Autowired
     public PersonServiceImpl(PersonDao personDao) {
         this.personDao = personDao;
     }

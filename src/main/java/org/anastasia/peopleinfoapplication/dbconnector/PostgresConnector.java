@@ -2,6 +2,7 @@ package org.anastasia.peopleinfoapplication.dbconnector;
 
 import org.anastasia.peopleinfoapplication.exception.DBConnectionException;
 import org.anastasia.peopleinfoapplication.exception.ReadPropertyException;
+import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Component
 public class PostgresConnector implements Connector {
     @Override
     public Connection getConnection() {

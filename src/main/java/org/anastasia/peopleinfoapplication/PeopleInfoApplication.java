@@ -1,12 +1,11 @@
 package org.anastasia.peopleinfoapplication;
 
-import org.anastasia.peopleinfoapplication.dao.PersonDao;
-import org.anastasia.peopleinfoapplication.dao.PersonDaoImpl;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class PeopleInfoApplication {
     public static void main(String[] args) {
-        PersonDao personDao = new ClassPathXmlApplicationContext("file:src/main/resources/applicationContext.xml")
-                .getBean("personDaoImpl", PersonDaoImpl.class);
+        SpringApplication.run(PeopleInfoApplication.class);
     }
 }

@@ -2,17 +2,22 @@ package org.anastasia.peopleinfoapplication.dao;
 
 import org.anastasia.peopleinfoapplication.model.Person;
 import org.anastasia.peopleinfoapplication.service.PersonService;
-import org.anastasia.peopleinfoapplication.service.PersonServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 
+@SpringBootTest
 public class PersonServiceTest {
-    private final PersonService personService = new ClassPathXmlApplicationContext("file:src/main/resources/applicationContext.xml")
-            .getBean("personServiceImpl", PersonServiceImpl.class);
+    private final PersonService personService;
+
+    @Autowired
+    public PersonServiceTest(PersonService personService) {
+        this.personService = personService;
+    }
 
     @AfterEach
     void deleteAll() {

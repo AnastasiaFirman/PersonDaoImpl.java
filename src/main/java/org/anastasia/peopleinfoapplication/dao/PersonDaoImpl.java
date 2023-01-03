@@ -3,12 +3,15 @@ package org.anastasia.peopleinfoapplication.dao;
 import org.anastasia.peopleinfoapplication.dbconnector.Connector;
 import org.anastasia.peopleinfoapplication.exception.SQLProcessingException;
 import org.anastasia.peopleinfoapplication.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class PersonDaoImpl implements PersonDao {
     private static final String FIND_ALL = "select * from person;";
     private static final String DELETE_ALL = "delete from person;";
@@ -19,8 +22,9 @@ public class PersonDaoImpl implements PersonDao {
 
     private static final String UPDATE_BY_ID = "update person set first_name = ?, last_name = ?," +
             "age = ?, date_of_birth = ? where id = ?;";
-    private Connector connector;
+    private final Connector connector;
 
+    @Autowired
     public PersonDaoImpl(Connector connector) {
         this.connector = connector;
     }
