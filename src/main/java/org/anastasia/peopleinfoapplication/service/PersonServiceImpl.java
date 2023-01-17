@@ -38,11 +38,6 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void deleteAll() {
-        personDao.deleteAll();
-    }
-
-    @Override
     public void deleteById(Long id) {
         personDao.deleteById(id);
     }

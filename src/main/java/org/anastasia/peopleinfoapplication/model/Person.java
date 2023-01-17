@@ -1,5 +1,7 @@
 package org.anastasia.peopleinfoapplication.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -8,6 +10,7 @@ public class Person {
     private String firstName;
     private String lastName;
     private int age;
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
 
     public Person(Long id, String firstName, String lastName, int age, LocalDate dateOfBirth) {

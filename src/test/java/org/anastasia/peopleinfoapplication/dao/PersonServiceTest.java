@@ -13,15 +13,18 @@ import java.time.LocalDate;
 @SpringBootTest
 public class PersonServiceTest {
     private final PersonService personService;
+    private final PersonDao personDao;
+
 
     @Autowired
-    public PersonServiceTest(PersonService personService) {
+    public PersonServiceTest(PersonService personService, PersonDao personDao) {
         this.personService = personService;
+        this.personDao = personDao;
     }
 
     @AfterEach
     void deleteAll() {
-        personService.deleteAll();
+        personDao.deleteAll();
     }
 
     @Test
