@@ -6,20 +6,22 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sql.DataSource;
 import java.time.LocalDate;
 
-@SpringBootTest
-public class PersonServiceTest {
+
+public class PersonServiceTest extends BaseIntegrationTest{
     private final PersonService personService;
     private final PersonDao personDao;
+    private final DataSource dataSource;
 
 
     @Autowired
-    public PersonServiceTest(PersonService personService, PersonDao personDao) {
+    public PersonServiceTest(PersonService personService, PersonDao personDao, DataSource dataSource) {
         this.personService = personService;
         this.personDao = personDao;
+        this.dataSource = dataSource;
     }
 
     @AfterEach

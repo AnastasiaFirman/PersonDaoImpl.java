@@ -1,0 +1,160 @@
+openapi: 3.0.1
+info:
+  title: people-info-application
+  description: REST-API на чтение и изменение списка людей
+  contact:
+    name: Анастасия Фирман
+    email: fakemail@gmail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: PersonController
+    description: Контроллер для работы со списком людей
+paths:
+  /person:
+    get:
+      summary: Получение списка всех людей
+      description: Получение списка всех людей
+      tags:
+        - PersonController
+      operationId: findAll
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonListResponse'
+        '500':
+          description: Internal server error
+    post:
+      tags:
+        - PersonController
+      operationId: save
+      summary: Добавление нового человека в список
+      description: Добавление нового человека в список
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '500':
+          description: Internal server error
+
+
+
+  /person/{id}:
+    get:
+      summary: Получение человека по id
+      description: Получение человека по id
+      tags:
+        - PersonController
+      operationId: findById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id человека
+          schema:
+            type: string
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '500':
+          description: Internal server error
+
+    put:
+      tags:
+        - PersonController
+      operationId: update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id человека
+          schema:
+            type: string
+            example: 1
+      summary: Обновление человека в списке
+      description: Обновление человека в списке
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Person'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '500':
+          description: Internal server error
+
+    delete:
+      summary: удаление человека по id
+      description: удаление человека по id
+      tags:
+        - PersonController
+      operationId: deleteById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id человека
+          schema:
+            type: string
+            example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json: {}
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: string
+          example: 1
+          description: id человека
+        firstName:
+          type: string
+          example: Дмитрий
+          description: имя человека
+        lastName:
+          type: string
+          example: Иванов
+          description: фамилия человека
+        dateOfBirth:
+          type: string
+          example: "12.12.2012"
+          description: дата рождения
+        age:
+          readOnly: true
+          type: integer
+          example: 10
+          description: возраст
+      required: [id, firstName, lastName, age]
+    PersonListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Person'

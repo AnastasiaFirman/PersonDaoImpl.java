@@ -1,11 +1,11 @@
 package org.anastasia.peopleinfoapplication.dao;
 
-import org.anastasia.peopleinfoapplication.dbconnector.Connector;
 import org.anastasia.peopleinfoapplication.exception.SQLProcessingException;
 import org.anastasia.peopleinfoapplication.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,16 +22,18 @@ public class PersonDaoImpl implements PersonDao {
 
     private static final String UPDATE_BY_ID = "update person set first_name = ?, last_name = ?," +
             "age = ?, date_of_birth = ? where id = ?;";
-    private final Connector connector;
 
     @Autowired
-    public PersonDaoImpl(Connector connector) {
-        this.connector = connector;
+    private final DataSource dataSource;
+
+    @Autowired
+    public PersonDaoImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public Person save(Person person) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_PERSON, Statement.RETURN_GENERATED_KEYS);) {
 
             preparedStatement.setString(1, person.getFirstName());
@@ -52,28 +54,25 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Optional<Person> findById(Long id) {
-        Person person;
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
 
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                person = buildPerson(resultSet);
-            } else {
-                return Optional.empty();
+                return Optional.of(buildPerson(resultSet));
             }
+                return Optional.empty();
         } catch (SQLException e) {
             throw new SQLProcessingException(e.getMessage());
         }
-        return Optional.of(person);
     }
 
     @Override
     public List<Person> findAll() {
         List<Person> result = new LinkedList<>();
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -88,7 +87,7 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void deleteAll() {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ALL)) {
 
             preparedStatement.executeUpdate();
@@ -99,7 +98,7 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public void deleteById(Long id) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_ID)) {
 
             preparedStatement.setLong(1, id);
@@ -111,7 +110,7 @@ public class PersonDaoImpl implements PersonDao {
 
     @Override
     public Person update(Long id, Person person) {
-        try (Connection connection = connector.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_BY_ID)) {
             findById(id);
 

@@ -30,4 +30,14 @@ public class PersonController {
     public Person save(@RequestBody Person person) {
         return personService.save(person);
     }
+
+    @PutMapping("/api/v1/person/{id}")
+    public Person update(@RequestBody Person person, @PathVariable("id") Long id) {
+        return personService.update(id, person);
+    }
+
+    @DeleteMapping("/api/v1/person/{id}")
+    public void deleteById(@PathVariable("id") Long id) {
+        personService.deleteById(id);
+    }
 }

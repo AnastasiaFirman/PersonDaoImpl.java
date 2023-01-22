@@ -5,17 +5,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sql.DataSource;
 import java.time.LocalDate;
 
-@SpringBootTest
-public class PersonDaoTest {
+public class PersonDaoTest extends BaseIntegrationTest{
     private final PersonDao personDao;
+    private final DataSource dataSource;
 
     @Autowired
-    public PersonDaoTest(PersonDao personDao) {
+    public PersonDaoTest(PersonDao personDao, DataSource dataSource) {
         this.personDao = personDao;
+        this.dataSource = dataSource;
     }
 
     @AfterEach
