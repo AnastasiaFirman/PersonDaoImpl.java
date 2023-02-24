@@ -130,24 +130,6 @@ public class PersonDaoImpl implements PersonDao {
 
     private Optional<Person> buildPerson(ResultSet resultSet) {
         Person person = new Person();
-        Long currentPersonId = person.getId();
-        try {
-            while (resultSet.next() && currentPersonId.equals(person.getId())) {
-                createPerson(resultSet);
-                //createBook(resultSet);
-                person.setBooks(createBook(resultSet));
-                if (!Objects.equals(currentPersonId, person.getId())) {
-                    createPerson(resultSet);
-                    person.setBooks(createBook(resultSet));
-                }
-            }
-        } catch (SQLException e) {
-            throw new SQLProcessingException(e.getMessage());
-        }
-        return Optional.of(person);
-    }
-
-        /*Person person = new Person();
         List<Book> books = new LinkedList<>();
         person.setBooks(books);
         try {
@@ -175,10 +157,29 @@ public class PersonDaoImpl implements PersonDao {
         } catch (SQLException e) {
             throw new SQLProcessingException(e.getMessage());
         }
-        return Optional.of(person);*/
+        return Optional.of(person);
+
+    }
+        /*Person person = new Person();
+        Long currentPersonId = person.getId();
+        try {
+            while (resultSet.next() && currentPersonId.equals(person.getId())) {
+                createPerson(resultSet);
+                //createBook(resultSet);
+                person.setBooks(createBook(resultSet));
+                if (!Objects.equals(currentPersonId, person.getId())) {
+                    createPerson(resultSet);
+                    person.setBooks(createBook(resultSet));
+                }
+            }
+        } catch (SQLException e) {
+            throw new SQLProcessingException(e.getMessage());
+        }
+        return Optional.of(person);
+    }*/
 
 
-    private Optional<Person> createPerson(ResultSet resultSet) {
+   /* private Optional<Person> createPerson(ResultSet resultSet) {
         Person person = new Person();
         //List<Book> books = new LinkedList<>();
         try {
@@ -188,8 +189,8 @@ public class PersonDaoImpl implements PersonDao {
                 person.setLastName(resultSet.getString("last_name"));
                 person.setAge(resultSet.getInt("age"));
                 person.setDateOfBirth((resultSet.getDate("date_of_birth")).toLocalDate());
-                /*createBook(resultSet);
-                person.setBooks(books);*/
+                *//*createBook(resultSet);
+                person.setBooks(books);*//*
             } else {
                 return Optional.empty();
             }
@@ -213,5 +214,5 @@ public class PersonDaoImpl implements PersonDao {
             throw new SQLProcessingException(e.getMessage());
         }
         return books;
-    }
+    }*/
 }
