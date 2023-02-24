@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="2" author="Anastasia">
+        <createTable tableName="books" remarks="Books table">
+            <column name="id" type="bigserial" autoIncrement="true" remarks="ID автоинкремент">
+            <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="text" remarks="Book title">
+                <constraints nullable="false"/>
+            </column>
+            <column name="author" type="text" remarks="Author">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="person_id" type="bigint" remarks="person id">
+                <constraints foreignKeyName="fk_books_person_id" references="person(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

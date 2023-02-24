@@ -14,14 +14,11 @@ import java.time.LocalDate;
 public class PersonServiceTest extends BaseIntegrationTest{
     private final PersonService personService;
     private final PersonDao personDao;
-    private final DataSource dataSource;
-
 
     @Autowired
-    public PersonServiceTest(PersonService personService, PersonDao personDao, DataSource dataSource) {
+    public PersonServiceTest(PersonService personService, PersonDao personDao) {
         this.personService = personService;
         this.personDao = personDao;
-        this.dataSource = dataSource;
     }
 
     @AfterEach

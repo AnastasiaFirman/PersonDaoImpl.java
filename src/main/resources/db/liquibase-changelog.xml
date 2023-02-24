@@ -2,5 +2,6 @@
 <databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <include file="changelog/init-schema.xml"/>
+    <include file="db/changelog/init-schema.xml"/>
+    <include file="db/changelog/add-books-table.xml"/>
 </databaseChangeLog>
