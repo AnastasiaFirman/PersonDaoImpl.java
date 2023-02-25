@@ -1,6 +1,7 @@
 package org.anastasia.peopleinfoapplication.dao;
 
 import org.anastasia.peopleinfoapplication.exception.SQLProcessingException;
+import org.anastasia.peopleinfoapplication.model.Book;
 import org.anastasia.peopleinfoapplication.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,8 @@ import java.util.Optional;
 
 @Repository
 public class PersonDaoImpl implements PersonDao {
-    private static final String FIND_ALL = "select * from person;";
+    private static final String FIND_ALL_PEOPLE = "select * from person;";
+    private static final String FIND_BOOK_BY_PERSON_ID = "select * from book where person_id = ?;";
     private static final String DELETE_ALL = "delete from person;";
     private static final String FIND_BY_ID = "select * from person where id = ?;";
     private static final String SAVE_PERSON =
@@ -61,9 +63,9 @@ public class PersonDaoImpl implements PersonDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return Optional.of(buildPerson(resultSet));
+                return Optional.of(buildPersonWithBooks(resultSet));
             }
-                return Optional.empty();
+            return Optional.empty();
         } catch (SQLException e) {
             throw new SQLProcessingException(e.getMessage());
         }
@@ -73,11 +75,11 @@ public class PersonDaoImpl implements PersonDao {
     public List<Person> findAll() {
         List<Person> result = new LinkedList<>();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_PEOPLE)) {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                result.add(buildPerson(resultSet));
+                result.add(buildPersonWithBooks(resultSet));
             }
         } catch (SQLException e) {
             throw new SQLProcessingException(e.getMessage());
@@ -127,7 +129,7 @@ public class PersonDaoImpl implements PersonDao {
         return person;
     }
 
-    private Person buildPerson(ResultSet resultSet) {
+    private Person buildPersonWithBooks(ResultSet resultSet) {
         Person person = new Person();
         try {
             person.setId(resultSet.getLong("id"));
@@ -135,9 +137,30 @@ public class PersonDaoImpl implements PersonDao {
             person.setLastName(resultSet.getString("last_name"));
             person.setAge(resultSet.getInt("age"));
             person.setDateOfBirth((resultSet.getDate("date_of_birth")).toLocalDate());
+            person.setBooks(findAndBuildBooksForPerson(person.getId()));
         } catch (SQLException e) {
             throw new SQLProcessingException(e.getMessage());
         }
         return person;
     }
+
+    private List<Book> findAndBuildBooksForPerson(Long personId) {
+        List<Book> books = new LinkedList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BOOK_BY_PERSON_ID)) {
+            preparedStatement.setLong(1, personId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Book book = new Book();
+                book.setId(resultSet.getLong("id"));
+                book.setAuthor(resultSet.getString("author"));
+                book.setTitle(resultSet.getString("title"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            throw new SQLProcessingException(e.getMessage());
+        }
+        return books;
+    }
+
 }
