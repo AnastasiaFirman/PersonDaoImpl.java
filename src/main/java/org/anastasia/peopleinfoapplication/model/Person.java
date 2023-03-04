@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public class Person {
     @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate dateOfBirth;
 
-    private List<Book> books;
+    private List<Book> books = new LinkedList<>();
 
     public Person(Long id, String firstName, String lastName, int age, LocalDate dateOfBirth) {
         this.id = id;
