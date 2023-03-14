@@ -1,6 +1,5 @@
 package org.anastasia.peopleinfoapplication.dao;
 
-import liquibase.pro.packaged.B;
 import org.anastasia.peopleinfoapplication.exception.SQLProcessingException;
 import org.anastasia.peopleinfoapplication.model.Book;
 import org.anastasia.peopleinfoapplication.model.Person;
@@ -13,8 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class PersonDaoImpl implements PersonDao {
+@Repository("jdbcImpl")
+public class PersonDaoJDBCImpl implements PersonDao {
     private static final String FIND_ALL = "select p.id person_id, p.first_name, p.last_name, p.age, p.date_of_birth, b.id book_id, b.title, b.author" +
             " from person p left join book b on p.id = b.person_id;";
     private static final String DELETE_ALL = "delete from person;";
@@ -27,11 +26,10 @@ public class PersonDaoImpl implements PersonDao {
     private static final String UPDATE_BY_ID = "update person set first_name = ?, last_name = ?," +
             "age = ?, date_of_birth = ? where id = ?;";
 
-    @Autowired
     private final DataSource dataSource;
 
     @Autowired
-    public PersonDaoImpl(DataSource dataSource) {
+    public PersonDaoJDBCImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -91,16 +89,20 @@ public class PersonDaoImpl implements PersonDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             long currentPersonId = 0L;
             Person person = null;
+            List<Book> books = null;
             while (resultSet.next()) {
                 long personId = resultSet.getLong("person_id");
                 if (personId != currentPersonId) {
                     currentPersonId = personId;
                     person = createPerson(personId, resultSet);
+                    books = new LinkedList<>();
                     result.add(person);
+                    person.setBooks(books);
                 }
                 long bookId = resultSet.getLong("book_id");
                 if (bookId != 0) {
-                    person.getBooks().add(createBook(resultSet, bookId));
+                    books.add(createBook(resultSet, bookId));
+
                 }
             }
         } catch (SQLException e) {

@@ -4,6 +4,7 @@ import org.anastasia.peopleinfoapplication.dao.PersonDao;
 import org.anastasia.peopleinfoapplication.exception.UserNotFoundException;
 import org.anastasia.peopleinfoapplication.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,7 +17,7 @@ public class PersonServiceImpl implements PersonService {
     private final PersonDao personDao;
 
     @Autowired
-    public PersonServiceImpl(PersonDao personDao) {
+    public PersonServiceImpl(@Qualifier("jpaImpl") PersonDao personDao) {
         this.personDao = personDao;
     }
 
@@ -34,7 +35,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<Person> findAll() {
-        return personDao.findAll();
+        List<Person> all = personDao.findAll();
+        return all;
     }
 
     @Override

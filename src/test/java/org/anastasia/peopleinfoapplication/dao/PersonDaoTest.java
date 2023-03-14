@@ -5,18 +5,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class PersonDaoTest extends BaseIntegrationTest{
     private final PersonDao personDao;
-    private final DataSource dataSource;
 
     @Autowired
-    public PersonDaoTest(PersonDao personDao, DataSource dataSource) {
+    public PersonDaoTest(@Qualifier("jpaImpl") PersonDao personDao) {
         this.personDao = personDao;
-        this.dataSource = dataSource;
     }
 
     @AfterEach
@@ -27,6 +26,7 @@ public class PersonDaoTest extends BaseIntegrationTest{
     @Test
     void saveAndFindTest() {
         Person personForSave = new Person("Katya", "Ivanova", 24, LocalDate.now());
+        personForSave.setBooks(new ArrayList<>());
         personDao.save(personForSave);
         Person foundPerson = personDao.findById(personForSave.getId()).get();
         Assertions.assertEquals(personForSave, foundPerson);
