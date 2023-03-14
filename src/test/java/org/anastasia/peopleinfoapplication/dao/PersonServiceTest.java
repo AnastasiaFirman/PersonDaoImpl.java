@@ -1,32 +1,30 @@
 package org.anastasia.peopleinfoapplication.dao;
 
 import org.anastasia.peopleinfoapplication.model.Person;
+import org.anastasia.peopleinfoapplication.repository.PersonRepository;
 import org.anastasia.peopleinfoapplication.service.PersonService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.sql.DataSource;
 import java.time.LocalDate;
 
 
 public class PersonServiceTest extends BaseIntegrationTest{
     private final PersonService personService;
-    private final PersonDao personDao;
-    private final DataSource dataSource;
+    private final PersonRepository personRepository;
 
 
     @Autowired
-    public PersonServiceTest(PersonService personService, PersonDao personDao, DataSource dataSource) {
+    public PersonServiceTest(PersonService personService, PersonRepository personRepository) {
         this.personService = personService;
-        this.personDao = personDao;
-        this.dataSource = dataSource;
+        this.personRepository = personRepository;
     }
 
     @AfterEach
     void deleteAll() {
-        personDao.deleteAll();
+        personRepository.deleteAll();
     }
 
     @Test
@@ -51,8 +49,9 @@ public class PersonServiceTest extends BaseIntegrationTest{
 
     @Test
     void deleteByIdTest() {
-        Person person = new Person(1L, "Natalia", "Popova", 26, LocalDate.of(1996, 4, 11));
-        personService.deleteById(person.getId());
+        Person person = new Person("Natalia", "Popova", 26, LocalDate.of(1996, 4, 11));
+        Person savedPerson = personService.save(person);
+        personService.deleteById(savedPerson.getId());
         Assertions.assertEquals(0, personService.findAll().size());
     }
 }
